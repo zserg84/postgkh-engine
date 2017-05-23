@@ -112,7 +112,7 @@ class ProcDataProvider extends \CDataProvider
 
     if (!$skip && $row) {
       foreach ($row as $key => $value) {
-//        $value = $this->dataFormatter->format($value);
+        $value = $this->dataFormatter->format($value);
 
         $row[strtoupper($key)] = $value;
       }
@@ -171,6 +171,7 @@ class ProcDataProvider extends \CDataProvider
         if ($i < $offset + $limit) {
           $this->rawData[] = $row;
         }
+        $i++;
       }
     }
     return $this->rawData;

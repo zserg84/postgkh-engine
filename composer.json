@@ -3,7 +3,6 @@
   "description": "postgkh-engine",
   "type": "yii-extension",
   "keywords": ["yii", "postgkh"],
-  "minimum-stability": "stable",
   "license": "BSD-3-Clause",
   "version": "0.1",
   "authors": [

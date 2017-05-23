@@ -1,0 +1,8 @@
+# Created by .ignore support plugin (hsz.mobi)
+.gitignore
+.idea/
+.idea/markdown-navigator/
+.idea/misc.xml
+.idea/modules.xml
+.idea/postgkh-engine.iml
+.idea/workspace.xml

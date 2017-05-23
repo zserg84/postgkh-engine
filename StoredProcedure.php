@@ -109,7 +109,9 @@ abstract class StoredProcedure extends \CComponent
    */
   public function fetchAll()
   {
-    $result = $this->execute()->getData();
+    $dataProvider = $this->execute();
+    $dataProvider->setPagination(false);
+    $result = $dataProvider->getData();
     $this->_procedureResult = new ProcedureResult($result);
 
     return $this->_procedureResult;
@@ -200,7 +202,7 @@ abstract class StoredProcedure extends \CComponent
    * @param $attribute
    * @param string $error
    */
-  private function addError($attribute, $error = '')
+  public function addError($attribute, $error = '')
   {
     $this->_errors[$attribute][] = $error;
   }
