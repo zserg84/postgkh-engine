@@ -1,0 +1,26 @@
+{
+  "name": "zserg84/postgkh-engine",
+  "description": "postgkh-engine",
+  "type": "yii-extension",
+  "keywords": ["yii", "postgkh"],
+  "minimum-stability": "stable",
+  "license": "BSD-3-Clause",
+  "version": "0.1",
+  "authors": [
+    {
+      "name": "Sergey S. Zyryanov",
+      "email": "zserg84@gmail.com"
+    }
+  ],
+  "support": {
+    "source": "https://github.com/zserg84/yii2-shop-basket"
+  },
+  "require": {
+    "yiisoft/yii": "1.1.18"
+  },
+  "autoload": {
+    "psr-4": {
+      "zserg84\\postgkhEngine\\": ""
+    }
+  }
+}
