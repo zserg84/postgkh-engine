@@ -109,8 +109,8 @@ class ProcedureResult extends \CComponent implements \Countable, \Iterator, \Arr
 
     public function offsetGet($offset)
     {
-        return $this->result[$offset];
-//    return $this->offsetExists($offset) ? $this->result[$offset] : null;
+//        return $this->result[$offset];
+    return $this->offsetExists($offset) ? $this->result[$offset] : null;
     }
 
     public function offsetSet($offset, $value)

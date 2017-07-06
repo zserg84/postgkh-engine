@@ -40,15 +40,28 @@ abstract class StoredProcedure extends \CComponent
      */
     private $dataFormatter;
 
+    private $logger;
+
+    /**
+     * @var флаг для того чтобы валидировать данные только 1 раз
+     */
+    private $validate = false;
+
     /**
      * @param DbDriver $driver
      * @param ProcedureDataFormatter $dataFormatter
+     * @param $logger
      * @param array $parameters
      */
-    public function __construct(DbDriver $driver, $dataFormatter, $parameters = [])
+    public function __construct(DbDriver $driver, $dataFormatter, $logger = null, $parameters = [])
     {
         $this->driver = $driver;
         $this->dataFormatter = $dataFormatter;
+
+        if($logger){
+            $logger->init();
+        }
+        $this->logger = $logger;
 
         $this->fillAttributes($parameters);
 
@@ -89,6 +102,16 @@ abstract class StoredProcedure extends \CComponent
         $result = $dataProvider->getData();
         $this->_procedureResult = new ProcedureResult($result);
 
+        if($this->logger){
+            if($this->_procedureResult->isError()){
+                $this->logger->error = $this->_procedureResult->message;
+            }
+            else{
+                $this->logger->result = $this->_procedureResult->res;
+            }
+            $this->logger->insert();
+        }
+
         return $this->_procedureResult;
     }
 
@@ -98,16 +121,28 @@ abstract class StoredProcedure extends \CComponent
      */
     public function execute()
     {
-
-        if (!$this->validation()) {
-            $errors = $this->getErrors();
-            $firstError = reset($errors);
-            throw new \Exception(reset($firstError));
-        }
-
         $query = $this->getQuery($this->_attributes);
-        $data = new ProcDataProvider($query, $this->driver, $this->dataFormatter);
+        $data = new ProcDataProvider($query, $this->driver, $this->dataFormatter, $this->logger);
         return $data;
+    }
+
+    /**
+     * Метод getQuery.
+     * Позволяет получить запрос, для выполнения процедуры
+     * @throws \Exception
+     * @return string
+     */
+    public function getQuery()
+    {
+        if (!$this->validate) {
+            if (!$this->validation()) {
+                $errors = $this->getErrors();
+                $firstError = reset($errors);
+                throw new \Exception(reset($firstError));
+            }
+            $this->validate = true;
+        }
+        return $this->driver->createQuery($this->name, $this->_attributes);
     }
 
     /**
@@ -127,17 +162,6 @@ abstract class StoredProcedure extends \CComponent
     public function getErrors()
     {
         return $this->_errors;
-    }
-
-    /**
-     * Метод getQuery.
-     * Позволяет получить запрос, для выполнения процедуры
-     * @param array $attributes
-     * @return string
-     */
-    public function getQuery($attributes = [])
-    {
-        return $this->driver->createQuery($this->name, $attributes);
     }
 
     /**
