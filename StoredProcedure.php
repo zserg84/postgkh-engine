@@ -90,7 +90,7 @@ abstract class StoredProcedure extends \CComponent
     /**
      * Метод fetchAll.
      * Выполняет запрос
-     * @return array
+     * @return ProcedureResult
      */
     public function fetchAll()
     {
