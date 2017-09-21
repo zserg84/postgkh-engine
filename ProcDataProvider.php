@@ -173,7 +173,7 @@ class ProcDataProvider extends \CDataProvider
             $allRawData = $this->applyFilter($allRawData);
             $i = 0;
             foreach ($allRawData as $row) {
-                if ($i < $offset + $limit) {
+                if ($i >= $offset && $i < $offset + $limit) {
                     $this->rawData[] = $row;
                 }
                 $i++;
