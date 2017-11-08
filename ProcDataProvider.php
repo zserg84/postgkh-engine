@@ -106,16 +106,18 @@ class ProcDataProvider extends \CDataProvider
             return false;
 
         $row = $dataReader->read();
+        if(!$row)
+            return $row;
 
-        if (!$skip && $row) {
-            foreach ($row as $key => $value) {
-                $value = $this->dataFormatter->format($value);
+        $row = array_combine(array_keys($row), array_map(function ($value){
+            return $this->dataFormatter->format($value);
+        }, $row));
+        if (!$skip)
+            $rowModify = array_merge($row, array_change_key_case($row, CASE_UPPER));
+        else
+            $rowModify = $row;
 
-                $row[strtoupper($key)] = $value;
-            }
-        }
-
-        return $row;
+        return $rowModify;
     }
 
     /**

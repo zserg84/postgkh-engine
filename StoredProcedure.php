@@ -98,8 +98,9 @@ abstract class StoredProcedure extends \CComponent
 //            return $this->_procedureResult;
 //        }
         $dataProvider = $this->execute();
-        $dataProvider->setPagination(false);
-        $result = $dataProvider->getData();
+//        $dataProvider->setPagination(false);
+//        $result = $dataProvider->getData();
+        $result = $dataProvider->fetchAll();
         $this->_procedureResult = new ProcedureResult($result);
 
         if($this->logger){
