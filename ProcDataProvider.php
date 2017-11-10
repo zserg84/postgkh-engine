@@ -168,12 +168,8 @@ class ProcDataProvider extends \CDataProvider
             }
 
             $allRawData = [];
-            $totalItemCount = $this->getTotalItemCount();
-            for ($i=0; $i<$totalItemCount; $i++) {
-                $row = $this->fetch();
-                if ($i>=$offset && $i < $offset + $limit) {
-                    $allRawData[] = $row;
-                }
+            while ($row = $this->fetch()) {
+                $allRawData[] = $row;
             }
 
             $allRawData = $this->applyFilter($allRawData);
