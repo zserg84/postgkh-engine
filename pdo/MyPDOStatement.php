@@ -127,7 +127,7 @@ class MyPDOStatement
   {
     $result = $this->getResult();
     if($result)
-      return $this->getResult()->fetch_array(MyPDO::pdo2mysql($fetch_style));
+      return $result->fetch_array(MyPDO::pdo2mysql($fetch_style));
     else
       return null;
   }
