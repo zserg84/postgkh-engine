@@ -168,18 +168,27 @@ class ProcDataProvider extends \CDataProvider
             }
 
             $allRawData = [];
-            while ($row = $this->fetch()) {
-                $allRawData[] = $row;
-            }
-
-            $allRawData = $this->applyFilter($allRawData);
+            $hiddenCount = 0;
             $i = 0;
-            foreach ($allRawData as $row) {
-                if ($i >= $offset && $i < $offset + $limit) {
-                    $this->rawData[] = $row;
+            while ($i < $totalItemCount) {
+                if ($i - $hiddenCount < $offset) {
+                    $row = $this->fetch(true);
+                    if (!$this->applyFilter([$row]))
+                        $hiddenCount++;
+                } elseif ($i - $hiddenCount < $offset + $limit) {
+                    $row = $this->fetch();
+                    if ($this->applyFilter([$row]))
+                        $allRawData[] = $row;
+                    else
+                        $hiddenCount++;
+                } else {
+                    $row = $this->fetch();
+                    if (!$this->applyFilter([$row]))
+                        $hiddenCount++;
                 }
                 $i++;
             }
+            $this->rawData = $allRawData;
         }
         return $this->rawData;
     }
