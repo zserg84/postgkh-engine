@@ -157,13 +157,14 @@ class ProcDataProvider extends \CDataProvider
      */
     protected function fetchData()
     {
+        $totalItemCount = $this->getTotalItemCount();
         if (!$this->rawData) {
             if (($pagination = $this->getPagination()) !== false) {
-                $pagination->setItemCount($this->getTotalItemCount());
+                $pagination->setItemCount($totalItemCount);
                 $limit = $pagination->getLimit();
                 $offset = $pagination->getOffset();
             } else {
-                $limit = $this->getTotalItemCount();
+                $limit = $totalItemCount;
                 $offset = 0;
             }
 
